@@ -3,8 +3,8 @@ const BuiltForSection = () => {
     <section className="py-16">
       <div className="">
         <h1 className="text-5xl text-center font-semibold">
-          Why Every Leader Needs <span className="text-primary">WorkSync.</span>
-          Hub
+          Why Every Leader Needs <span className="text-primary">Task.</span>
+          ly
         </h1>
       </div>
       <div className="flex justify-center mx-5 flex-col md:flex-row items-center gap-20 py-24 ">

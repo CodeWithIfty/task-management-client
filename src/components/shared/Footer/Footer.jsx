@@ -127,7 +127,7 @@ const Footer = () => {
             </a>
           </div>
           <p className="mt-8 text-base leading-6 text-center text-gray-400">
-            © 2021 WorkSync Hub, Inc. All rights reserved.
+            © 2021 Task.ly, Inc. All rights reserved.
           </p>
         </div>
       </section>

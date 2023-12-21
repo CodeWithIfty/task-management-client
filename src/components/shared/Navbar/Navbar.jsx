@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Navbar = () => {
   return (
     <div className="navbar bg-base-100">
@@ -24,35 +26,37 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
             <li>
-              <a>Home</a>
+              <Link to={"/"}>Home</Link>
             </li>
             <li>
-              <a>All Task</a>
+              <Link to={"/dashboard"}>All Task</Link>
             </li>
             <li>
-              <a>About Us</a>
+              <Link to={"/about-us"}>About Us</Link>
             </li>
           </ul>
         </div>
-        <a className=" text-2xl font-semibold">
-          <span className="text-primary">WorkSync.</span>Hub
-        </a>
+        <Link to={"/"} className=" text-2xl font-semibold">
+          <span className="text-primary">Task.</span>ly
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <a>Home</a>
+            <Link to={"/"}>Home</Link>
           </li>
           <li>
-            <a>All Task</a>
+            <Link to={"/dashboard"}>All Task</Link>
           </li>
           <li>
-            <a>About Us</a>
+            <Link to={"/about-us"}>About Us</Link>
           </li>
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn bg-primary text-white">Login</a>
+        <Link to={"/login"} className="btn bg-primary text-white">
+          Login
+        </Link>
       </div>
     </div>
   );
