@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -8,6 +7,11 @@ import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import DashboardLayout from "./layouts/DashboardLayout.jsx";
 import Dashboard from "./components/Dashboard/Dashboard.jsx";
+import MyTasks from "./components/Dashboard/MyTasks/MyTasks.jsx";
+import AddTask from "./components/Dashboard/AddTask/AddTask.jsx";
+import AuthProvider from "./utils/context/AuthProvider.jsx";
+import { Toaster } from "react-hot-toast";
+import PrivateRoute from "./utils/PrivateRoute.jsx";
 
 const router = createBrowserRouter([
   {
@@ -30,18 +34,35 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <DashboardLayout />,
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "/dashboard",
-        element: <Dashboard />,
+        element: (
+          <PrivateRoute>
+            <MyTasks />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "add-task",
+        element: (
+          <PrivateRoute>
+            <AddTask />
+          </PrivateRoute>
+        ),
       },
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  <AuthProvider>
     <RouterProvider router={router} />
-  </React.StrictMode>
+    <Toaster />
+  </AuthProvider>
 );

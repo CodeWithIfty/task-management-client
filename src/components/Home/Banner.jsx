@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Banner = () => {
   return (
     <div>
@@ -9,9 +11,12 @@ const Banner = () => {
         <p className="text-gray-400 text-center text-xl mt-5">
           Boosting Productivity and Achieving Goals
         </p>
-        <button className="px-6 py-4 bg-primary text-white rounded-full mt-12 hover:bg-transparent hover:ring-2 hover:text-black transition-all ease-in-out duration-100 focus:scale-95">
+        <Link
+          to={"/login"}
+          className="px-6 py-4 bg-primary text-white rounded-full mt-12 hover:bg-transparent hover:ring-2 hover:text-black transition-all ease-in-out duration-100 focus:scale-95"
+        >
           Explore More
-        </button>
+        </Link>
       </div>
 
       {/* Image Section */}

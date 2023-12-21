@@ -1,6 +1,9 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { authContext } from "../../../utils/context/AuthProvider";
 
 const Navbar = () => {
+  const { user, loading, SignOutUser } = useContext(authContext);
   return (
     <div className="navbar bg-base-100">
       <div className="navbar-start">
@@ -54,9 +57,48 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <Link to={"/login"} className="btn bg-primary text-white">
-          Login
-        </Link>
+        <div className="">
+          {loading ? (
+            <span className="loading loading-ring loading-md scale-150 mr-5"></span>
+          ) : user ? (
+            <div className="dropdown dropdown-end">
+              <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                <div className="w-10 rounded-full">
+                  <img
+                    src={`${
+                      user.photoURL
+                        ? user.photoURL
+                        : "https://i.ibb.co/rHzPb0S/icon-256x256.png"
+                    }`}
+                  />
+                </div>
+              </label>
+              <ul
+                tabIndex={0}
+                className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              >
+                <li>
+                  <a className="font-bold">{user.displayName}</a>
+                </li>
+                <li>
+                  <a>Profile</a>
+                </li>
+                <li>
+                  <a>Settings</a>
+                </li>
+                <li>
+                  <button onClick={SignOutUser} className="text-error">
+                    Logout
+                  </button>
+                </li>
+              </ul>
+            </div>
+          ) : (
+            <Link to={"/login"} className="btn bg-primary text-white">
+              Login
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );

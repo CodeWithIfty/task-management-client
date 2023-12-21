@@ -1,12 +1,45 @@
-import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { authContext } from "../utils/context/AuthProvider";
+import toast from "react-hot-toast";
+import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
+  const { SignInUser, loading, setLoading, SignInWithGoogle } =
+    useContext(authContext);
+  const navigate = useNavigate();
+  // signin using email and password
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
     const userCredintial = { email, password };
     console.log(userCredintial);
+
+    const toastId = toast.loading("Logging in ...");
+
+    SignInUser(email, password)
+      .then(() => {
+        toast.success("Logged in", { id: toastId });
+        navigate(location?.state ? location.state : "/");
+      })
+      .catch(() => {
+        setLoading(false);
+        toast.error("Invalid Login Details", { id: toastId });
+      });
+  };
+
+  const handleSignInWithGoogle = () => {
+    const toastId = toast.loading("Logging in ...");
+    SignInWithGoogle()
+      .then(() => {
+        toast.success("Logged in", { id: toastId });
+        navigate(location?.state ? location.state : "/");
+      })
+      .catch((error) => {
+        toast.error("Invalid Login Details", { id: toastId });
+        console.log(error);
+      });
   };
   return (
     <section className="">
@@ -91,6 +124,16 @@ const Login = () => {
                   Sign up
                 </Link>
               </p>
+              <div className="flex justify-center">
+                <button
+                  type="button"
+                  className="py-2 px-4 border rounded-full  flex items-center gap-2 text-lg bg-white"
+                  onClick={handleSignInWithGoogle}
+                >
+                  <FcGoogle className="text-3xl" />
+                  <span>Register With Google</span>
+                </button>
+              </div>
             </form>
           </div>
         </div>

@@ -1,13 +1,47 @@
-import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { authContext } from "../utils/context/AuthProvider";
+import toast from "react-hot-toast";
+import { FcGoogle } from "react-icons/fc";
 
 const Register = () => {
-  const handleFormSubmit = (e) => {
+  const { createUser, SignInWithGoogle, updateUserProfile, user } =
+    useContext(authContext);
+  const navigate = useNavigate();
+
+  // Registering via email and password
+  const handleFormSubmit = async (e) => {
+    const toastId = toast.loading("Creating Account ...");
     e.preventDefault();
     const name = e.target.name.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
     const userCredintial = { name, email, password };
     console.log(userCredintial);
+    try {
+      const res = await createUser(email, password);
+      console.log(res);
+      await updateUserProfile(name);
+      toast.success("Successfully Registered !", { id: toastId });
+      navigate("/");
+      console.log(user);
+    } catch (error) {
+      console.log(error);
+      if (error.message.match(/email-already-in-use/g))
+        toast.error("This email already in use", { id: toastId });
+      console.log(error.message);
+    }
+  };
+
+  // Sign up using google
+  const handleSignInWithGoogle = () => {
+    const toastId = toast.loading("Logging in ...");
+    SignInWithGoogle()
+      .then(() => {
+        toast.success("Logged in", { id: toastId });
+        navigate(location?.state ? location.state : "/");
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <section className="">
@@ -34,7 +68,7 @@ const Register = () => {
                   id="name"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                   placeholder="Enter your name here..."
-                  required=""
+                  required
                 />
               </div>
 
@@ -51,7 +85,7 @@ const Register = () => {
                   id="email"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                   placeholder="name@company.com"
-                  required=""
+                  required
                 />
               </div>
 
@@ -66,9 +100,9 @@ const Register = () => {
                   type="password"
                   name="password"
                   id="password"
-                  placeholder="••••••••"
+                  placeholder="Enter a strong password"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
-                  required=""
+                  required
                 />
               </div>
 
@@ -87,6 +121,16 @@ const Register = () => {
                   Sing In
                 </Link>
               </p>
+              <div className="flex justify-center">
+                <button
+                  type="button"
+                  className="py-2 px-4 border rounded-full  flex items-center gap-2 text-lg bg-white"
+                  onClick={handleSignInWithGoogle}
+                >
+                  <FcGoogle className="text-3xl" />
+                  <span>Register With Google</span>
+                </button>
+              </div>
             </form>
           </div>
         </div>
