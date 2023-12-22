@@ -2,13 +2,18 @@ const BuiltForSection = () => {
   return (
     <section className="py-16">
       <div className="">
-        <h1 className="text-5xl text-center font-semibold">
+        <h1
+          className="text-5xl text-center font-semibold"
+          data-aos="fade-up"
+          data-aos-easing="linear"
+          data-aos-duration="500"
+        >
           Why Every Leader Needs <span className="text-primary">Task.</span>
           ly
         </h1>
       </div>
       <div className="flex justify-center mx-5 flex-col md:flex-row items-center gap-20 py-24 ">
-        <div className="">
+        <div className="" data-aos="fade-right">
           <h1 className="text-4xl font-semibold mb-5">
             Build a more productive and <br /> efficient company
           </h1>
@@ -156,7 +161,7 @@ const BuiltForSection = () => {
             Explore More
           </button>
         </div>
-        <div className="">
+        <div className="" data-aos="fade-left">
           <img src="/images/21.png" alt="" />
         </div>
       </div>

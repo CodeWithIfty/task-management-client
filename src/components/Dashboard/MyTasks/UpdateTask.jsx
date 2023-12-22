@@ -69,7 +69,7 @@ const UpdateTask = ({ updateModalData, setUpdateModalData }) => {
             <label>Title:</label>
             <input
               {...register("title", { required: true })}
-              className=" w-96 px-3 py-2 bg-gray-100 border rounded-lg"
+              className=" md:w-96  px-3 py-2 bg-gray-100 border rounded-lg"
               placeholder="Enter Task Title Here."
               defaultValue={task?.title}
             />
@@ -78,7 +78,7 @@ const UpdateTask = ({ updateModalData, setUpdateModalData }) => {
             <label>Description:</label>
             <textarea
               {...register("description")}
-              className=" w-96 px-3 py-2 bg-gray-100 border rounded-lg"
+              className=" md:w-96 px-3 py-2 bg-gray-100 border rounded-lg"
               placeholder="Enter Task Title Here."
               defaultValue={task?.description}
             />
@@ -88,7 +88,7 @@ const UpdateTask = ({ updateModalData, setUpdateModalData }) => {
             <input
               type="date"
               {...register("deadline")}
-              className=" w-96 px-3 py-2 bg-gray-100 border rounded-lg"
+              className=" md:w-96 px-3 py-2 bg-gray-100 border rounded-lg"
               defaultValue={task?.deadline}
             />
           </div>
@@ -96,7 +96,7 @@ const UpdateTask = ({ updateModalData, setUpdateModalData }) => {
             <label>Priority:</label>
             <select
               {...register("priority")}
-              className=" w-96 px-3 py-2 bg-gray-100 border rounded-lg"
+              className=" md:w-96 px-3 py-2 bg-gray-100 border rounded-lg"
               defaultValue={task?.priority}
             >
               <option value="">Select Priority</option>

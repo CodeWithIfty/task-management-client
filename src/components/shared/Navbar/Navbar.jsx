@@ -81,11 +81,9 @@ const Navbar = () => {
                   <a className="font-bold">{user.displayName}</a>
                 </li>
                 <li>
-                  <a>Profile</a>
+                  <Link to={"/dashboard/my-profile"}>Profile</Link>
                 </li>
-                <li>
-                  <a>Settings</a>
-                </li>
+
                 <li>
                   <button onClick={SignOutUser} className="text-error">
                     Logout

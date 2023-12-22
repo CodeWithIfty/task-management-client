@@ -120,10 +120,13 @@ export default function Column({ data, title, id }) {
                         : task.status === "inProgress"
                         ? "bg-orange-400"
                         : "bg-green-500"
-                    } p-5 rounded-xl text-white`}
+                    } lg:p-5 p-2 rounded-xl text-white`}
                   >
                     <div className="border-b pb-1 flex justify-between flex-col lg:flex-row">
-                      <h1 className="font-bold "> {task?.title}</h1>
+                      <h1 className="font-bold ">
+                        {" "}
+                        {task?.title.substring(0, 10)}..
+                      </h1>
                       <p
                         className={`${
                           task.priority === "moderate"
@@ -139,7 +142,7 @@ export default function Column({ data, title, id }) {
                     <p className="font-light">
                       {task?.description?.substring(0, 100)}...
                     </p>
-                    <div className="mt-3 flex items-center justify-between">
+                    <div className="mt-3 flex items-center justify-between flex-col gap-2 xl:flex-row">
                       <p className="">
                         {Math.ceil(
                           (new Date(task.deadline) - new Date()) /
@@ -174,22 +177,44 @@ export default function Column({ data, title, id }) {
       {modal && (
         <dialog id="my_modal_2" className="modal">
           <div className="modal-box">
-            <div className="border-b pb-1 flex justify-between flex-col lg:flex-row">
+            <div className="border-b pb-1 flex justify-between flex-col xl:flex-row">
               <h1 className="font-bold "> {modal?.title}</h1>
               <p
                 className={`${
                   modal.priority === "moderate"
-                    ? "text-orange-400"
+                    ? "bg-orange-500"
                     : modal.priority === "low"
-                    ? "text-gray-300"
-                    : "text-red-700"
-                }`}
+                    ? "bg-gray-300"
+                    : "bg-red-700"
+                } px-2 rounded-lg `}
               >
-                {modal?.priority}
+                {modal.priority}
               </p>
             </div>
             <p className="font-light">{modal?.description}</p>
-            <p className="mt-5">Deadline: {modal?.deadline}</p>
+            <div className="mt-3 flex items-center justify-between flex-col gap-2 xl:flex-row">
+              <p className="">
+                {Math.ceil(
+                  (new Date(modal.deadline) - new Date()) /
+                    (1000 * 60 * 60 * 24)
+                )}
+                days left
+              </p>
+              <div className="flex items-center gap-4">
+                <BiSolidShow
+                  className="text-2xl cursor-pointer"
+                  onClick={() => showModal(modal)}
+                />
+                <LuClipboardEdit
+                  className="text-2xl cursor-pointer"
+                  onClick={() => showEditModal(modal)}
+                />
+                <MdDeleteSweep
+                  className="text-2xl cursor-pointer "
+                  onClick={() => handleDeleteTask(modal)}
+                />
+              </div>
+            </div>
           </div>
           <form method="dialog" className="modal-backdrop">
             <button onClick={() => setModal(null)}>Close</button>
