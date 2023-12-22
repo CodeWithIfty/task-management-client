@@ -35,7 +35,7 @@ const Navbar = () => {
               <Link to={"/dashboard"}>All Task</Link>
             </li>
             <li>
-              <Link to={"/about-us"}>About Us</Link>
+              <a href="#about">About Us</a>
             </li>
           </ul>
         </div>
@@ -52,7 +52,7 @@ const Navbar = () => {
             <Link to={"/dashboard"}>All Task</Link>
           </li>
           <li>
-            <Link to={"/about-us"}>About Us</Link>
+            <a href="#about">About Us</a>
           </li>
         </ul>
       </div>

@@ -12,6 +12,7 @@ import AddTask from "./components/Dashboard/AddTask/AddTask.jsx";
 import AuthProvider from "./utils/context/AuthProvider.jsx";
 import { Toaster } from "react-hot-toast";
 import PrivateRoute from "./utils/PrivateRoute.jsx";
+import MyProfile from "./pages/MyProfile.jsx";
 
 const router = createBrowserRouter([
   {
@@ -53,6 +54,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <AddTask />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "my-profile",
+        element: (
+          <PrivateRoute>
+            <MyProfile />
           </PrivateRoute>
         ),
       },

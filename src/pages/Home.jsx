@@ -5,7 +5,9 @@ const Home = () => {
   return (
     <div>
       <Banner />
-      <BuiltForSection />
+      <section id="about">
+        <BuiltForSection />
+      </section>
     </div>
   );
 };

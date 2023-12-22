@@ -1,56 +1,68 @@
 import Heading from "../Heading";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { authContext } from "../../../utils/context/AuthProvider";
-import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-const AddTask = () => {
+const UpdateTask = ({ updateModalData, setUpdateModalData }) => {
   const { register, handleSubmit, reset } = useForm();
   const { user } = useContext(authContext);
+  const [task, setTask] = useState();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setTask(null); // Reset the form with updated data
+    setTask(updateModalData);
+  }, [updateModalData]);
+  console.log(updateModalData, setUpdateModalData);
 
   const onSubmit = async (data) => {
     const toastId = toast.loading("Loading...");
     const currentDate = new Date();
-    const deadline = new Date(data.deadline);
+    const selectedDate = new Date(
+      data.deadline ? data.deadline : updateModalData.deadline
+    );
 
-    // Check if the deadline is a future date
-    if (deadline <= currentDate) {
+    if (selectedDate <= currentDate) {
       toast.error("Please select a future date for the deadline.", {
         id: toastId,
       });
       return;
     }
 
-    try {
-      await axios.post(
-        "https://task-management-server-eight-sandy.vercel.app/addTodoTask",
-        {
-          email: user?.email,
-          data,
-        }
-      );
+    const daysLeft = Math.ceil(
+      (selectedDate - currentDate) / (1000 * 60 * 60 * 24)
+    );
 
-      const daysLeft = Math.ceil(
-        (deadline - currentDate) / (1000 * 60 * 60 * 24)
-      );
-      const message = `${daysLeft} day${daysLeft !== 1 ? "s" : ""} left to do`;
+    const newData = {
+      title: data.title ? data.title : updateModalData.title,
+      status: updateModalData.status,
+      priority: data.priority ? data.priority : updateModalData.priority,
+      id: updateModalData.id,
+      description: data.description
+        ? data.description
+        : updateModalData.description,
+      deadline: data.deadline ? data.deadline : updateModalData.deadline,
+    };
 
-      toast.success("Task Assigned", { id: toastId });
-      toast.success(message);
+    await axios.put(
+      `https://task-management-server-eight-sandy.vercel.app/updateSingleTask/${user?.email}`,
+      newData
+    );
+    window.location.reload();
+    setUpdateModalData(null);
+    toast.success("Task Assigned", { id: toastId });
+    toast.success(
+      `${daysLeft} day${daysLeft !== 1 ? "s" : ""} left to complete the task`
+    );
 
-      navigate("/dashboard");
-      reset();
-    } catch (error) {
-      console.log(error);
-    }
+    reset();
   };
 
   return (
     <div>
-      <Heading title={"Add Task"} />
       <div className="md:p-5">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col ">
@@ -59,6 +71,7 @@ const AddTask = () => {
               {...register("title", { required: true })}
               className=" w-96 px-3 py-2 bg-gray-100 border rounded-lg"
               placeholder="Enter Task Title Here."
+              defaultValue={task?.title}
             />
           </div>
           <div className="flex flex-col ">
@@ -67,6 +80,7 @@ const AddTask = () => {
               {...register("description")}
               className=" w-96 px-3 py-2 bg-gray-100 border rounded-lg"
               placeholder="Enter Task Title Here."
+              defaultValue={task?.description}
             />
           </div>
           <div className="flex flex-col ">
@@ -75,6 +89,7 @@ const AddTask = () => {
               type="date"
               {...register("deadline")}
               className=" w-96 px-3 py-2 bg-gray-100 border rounded-lg"
+              defaultValue={task?.deadline}
             />
           </div>
           <div className="flex flex-col ">
@@ -82,7 +97,9 @@ const AddTask = () => {
             <select
               {...register("priority")}
               className=" w-96 px-3 py-2 bg-gray-100 border rounded-lg"
+              defaultValue={task?.priority}
             >
+              <option value="">Select Priority</option>
               <option value="low">Low</option>
               <option value="moderate">Moderate</option>
               <option value="high">High</option>
@@ -101,4 +118,4 @@ const AddTask = () => {
   );
 };
 
-export default AddTask;
+export default UpdateTask;

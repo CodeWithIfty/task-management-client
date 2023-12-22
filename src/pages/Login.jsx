@@ -5,8 +5,7 @@ import toast from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
-  const { SignInUser, loading, setLoading, SignInWithGoogle } =
-    useContext(authContext);
+  const { SignInUser, setLoading, SignInWithGoogle } = useContext(authContext);
   const navigate = useNavigate();
   // signin using email and password
   const handleFormSubmit = (e) => {
@@ -43,7 +42,7 @@ const Login = () => {
   };
   return (
     <section className="">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-[68vh]">
+      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-[90vh]">
         <div className="w-full bg-white rounded-lg shadow-xl border  md:mt-0 sm:max-w-md xl:p-0 ">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
@@ -66,7 +65,7 @@ const Login = () => {
                   id="email"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                   placeholder="name@company.com"
-                  required=""
+                  required
                 />
               </div>
               <div>
@@ -82,7 +81,7 @@ const Login = () => {
                   id="password"
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
-                  required=""
+                  required
                 />
               </div>
               <div className="flex items-center justify-between">

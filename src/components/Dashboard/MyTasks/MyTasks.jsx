@@ -1,34 +1,43 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import Column from "./Column";
 import Heading from "../Heading";
-
-// Mock data
-const initialData = {
-  todo: [
-    { id: "task1", content: "Task 1", status: "todo" },
-    { id: "task2", content: "Task 2", status: "todo" },
-    // Add more tasks as needed
-  ],
-  inProgress: [
-    { id: "task3", content: "Task 1", status: "inProgress" },
-    { id: "task4", content: "Task 2", status: "inProgress" },
-  ],
-  completed: [
-    { id: "task5", content: "Task 1", status: "completed" },
-    { id: "task6", content: "Task 2", status: "completed" },
-  ],
-};
+import axios from "axios";
+import { authContext } from "../../../utils/context/AuthProvider";
+import { Link } from "react-router-dom";
 
 const MyTasks = () => {
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState(null);
+  const { user, loading, setLoading } = useContext(authContext);
 
   // Simulating API call to fetch data
   useEffect(() => {
-    // Replace this with your API call to fetch actual data
-    // For now, setting initial demo data
-    setData(initialData);
-  }, []);
+    axios
+      .get(
+        `https://task-management-server-eight-sandy.vercel.app/tasks/${user?.email}`
+      )
+      .then((res) => {
+        setData(res?.data?.tasks[0]);
+        console.log(res.data.tasks.length);
+        console.log(data);
+      });
+  }, [user]);
+  console.log(data?.todo);
+
+  useEffect(() => {
+    if (data) {
+      axios
+        .put(
+          `https://task-management-server-eight-sandy.vercel.app/updateTasks/${user?.email}`,
+          data
+        )
+        .then((res) => {
+          // setData(res?.data?.tasks[0]);
+          console.log(res);
+        });
+    }
+    console.log(data);
+  }, [data]);
 
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
@@ -70,33 +79,48 @@ const MyTasks = () => {
   return (
     <div className="">
       <Heading title={"My Tasks"} />
-      <div className="p-10">
-        <DragDropContext onDragEnd={onDragEnd}>
-          <div className="grid grid-cols-9 gap-1">
-            {/* Todo Column */}
-            <div className="col-span-3">
-              <Column data={data.todo} title={"Todo"} id={"todo"} />
-            </div>
-            {/* InProgress Column */}
-            <div className="col-span-3">
-              <Column
-                data={data.inProgress}
-                title={"In Progress"}
-                id={"inProgress"}
-              />
-            </div>
 
-            {/* Completed Column */}
-            <div className="col-span-3">
-              <Column
-                data={data.completed}
-                title={"Completed"}
-                id={"completed"}
-              />
+      {data?.todo?.length > 0 ||
+      data?.inProgress?.length > 0 ||
+      data?.completed?.length > 0 ? (
+        <div className="md:p-10">
+          <DragDropContext onDragEnd={onDragEnd}>
+            <div className="grid grid-cols-9 gap-1">
+              {/* Todo Column */}
+              <div className="col-span-3">
+                <Column data={data?.todo} title={"Todo"} id={"todo"} />
+              </div>
+              {/* InProgress Column */}
+              <div className="col-span-3">
+                <Column
+                  data={data?.inProgress}
+                  title={"In Progress"}
+                  id={"inProgress"}
+                />
+              </div>
+
+              {/* Completed Column */}
+              <div className="col-span-3">
+                <Column
+                  data={data?.completed}
+                  title={"Completed"}
+                  id={"completed"}
+                />
+              </div>
             </div>
-          </div>
-        </DragDropContext>
-      </div>
+          </DragDropContext>
+        </div>
+      ) : (
+        <div className="flex justify-center items-center h-[50vh] flex-col">
+          <h1 className="text-xl font-semibold">No Task Added </h1>
+          <Link
+            to={"/dashboard/add-task"}
+            className="text-white mt-4 underline btn btn-primary"
+          >
+            Add Task
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
